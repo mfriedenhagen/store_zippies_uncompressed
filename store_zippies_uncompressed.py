@@ -59,10 +59,10 @@ def replaceOriginalWithUncompressedWithoutThumb(name):
     try:
         hasThumbnail = containsThumbnail(infile)
         if hasThumbnail:
-            LOG.info("With thumbnail %s" % name)
+            LOG.info("Converting file with thumbnail %s" % name)
             createUncompressedCopyWithoutThumbnail(tmpname, infile)
         else:
-            LOG.info("Without thumbnail %s" % name)
+            LOG.debug("Without thumbnail %s" % name)
     finally:
         infile.close()
     # Do this *after* we close infile, as weird things might happen under Windows otherwise.
@@ -80,12 +80,10 @@ def addZippies(arg, dirname, fnames):
             
 if __name__ == "__main__":
     logging.basicConfig()
+    LOG.setLevel(logging.INFO)
     if "-d" in sys.argv:
         LOG.setLevel(logging.DEBUG)
         sys.argv.remove("-d")
-    if "-i" in sys.argv:
-        LOG.setLevel(logging.INFO)
-        sys.argv.remove("-i")
     zippies = []
     os.path.walk(sys.argv[1], addZippies, zippies)
     for zippy in zippies:

@@ -4,12 +4,16 @@ import sys
 import zipfile
 
 THUMBNAIL_NAMES = [
-    "Thumbnails/thumbnail.jpg", # xmind
-    "Thumbnails/thumbnail.png"  # open office
+    "Thumbnails/thumbnail.jpg",                        # xmind
+    "Thumbnails/thumbnail.png",                        # open office
+    "QuickLook/Thumbnail.jpg", "QuickLook/Preview.pdf" # iWork
 ]
-EXTENSIONS = [".xmind",]
-EXTENSIONS.extend((".odp", ".odt", ".ods", ".odg",)) # OO-Documents
-EXTENSIONS.extend((".otp", ".ott", ".ots", ".otg",)) # OO-Templates
+EXTENSIONS = [
+    ".xmind",
+    ".odp", ".odt", ".ods", ".odg", # OO-Documents
+    ".otp", ".ott", ".ots", ".otg", # OO-Templates
+    ".pages",                       # iWork
+]
 
 LOG = logging.getLogger()
 

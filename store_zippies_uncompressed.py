@@ -80,7 +80,12 @@ def addZippies(arg, dirname, fnames):
             
 if __name__ == "__main__":
     logging.basicConfig()
-    LOG.setLevel(logging.DEBUG)
+    if "-d" in sys.argv:
+        LOG.setLevel(logging.DEBUG)
+        sys.argv.remove("-d")
+    if "-i" in sys.argv:
+        LOG.setLevel(logging.INFO)
+        sys.argv.remove("-i")
     zippies = []
     os.path.walk(sys.argv[1], addZippies, zippies)
     for zippy in zippies:

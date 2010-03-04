@@ -78,18 +78,45 @@ def replaceOriginalWithUncompressedWithoutThumb(name):
 def addZippies(arg, dirname, fnames):
     """ Functor for collecting all these files with a ZIPped format. """
     for fname in fnames:
-        root, extension = os.path.splitext(fname)
-        if extension in EXTENSIONS:
+        if isZippy(fname):
             arg.append(os.path.join(dirname, fname))
-            
+
+def isZippy(fname):
+    """ Returns True if fname is a zippy. """
+    root, extension = os.path.splitext(fname)
+    return extension in EXTENSIONS
+
+def readFromStream(stream):
+    """ Read lines from stream. """
+    zippies = []
+    for line in stream:
+        fname = line.rstrip()
+        if isZippy(fname):
+            zippies.append(fname)
+        else:
+            LOG.debug("%s is not a zippy" % fname)
+    return zippies
+
+def replaceAllOriginalWithUncompressedWithoutThumb(zippies):
+    """ Replaces uncompressed zippies with compressed. """
+    for zippy in zippies:
+        replaceOriginalWithUncompressedWithoutThumb(zippy)
+
+def walkDirectory(directory):
+    """ Walks the directory and returns zippies. """
+    zippies = []
+    os.path.walk(directory, addZippies, zippies)
+    return zippies
+
 if __name__ == "__main__":
     logging.basicConfig()
     LOG.setLevel(logging.INFO)
     if "-d" in sys.argv:
         LOG.setLevel(logging.DEBUG)
         sys.argv.remove("-d")
-    zippies = []
-    os.path.walk(sys.argv[1], addZippies, zippies)
-    for zippy in zippies:
-        replaceOriginalWithUncompressedWithoutThumb(zippy)
+    if sys.argv[1] == "-":
+        zippies = readFromStream(sys.stdin)
+    else:
+        zippies = walkDirectory(sys.argv[1])
+    replaceAllOriginalWithUncompressedWithoutThumb(zippies)
 

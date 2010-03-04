@@ -14,6 +14,14 @@ atime.
 
 An optional argument `-d` will set the log level to DEBUG and spits out more information
 during the process.
+
+To use this with mercurial add something like::
+    [hooks]
+    pre-commit.store-zippies = hg status --modified --added --no-status | python store_zippies_uncompressed.py -
+to your hgrc file located in the repository or your HOME (mercurial.ini on Windows).
+
+This software is licensed under the Apache Software License (https://www.ohloh.net/licenses/apache).
+Copyright Mirko Friedenhagen 2010.
 """
 
 import logging

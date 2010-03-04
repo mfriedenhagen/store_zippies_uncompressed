@@ -1,3 +1,21 @@
+"""
+This python script will modify all zip style files like OpenOffice, XMind or iWork files,
+remove the preview png, jpg or pdf parts and store the remaining files uncompressed (STORED)
+thereby making them better suited for following changes in a SCM, e.g. Mercurial :-).
+
+There are two modes supported right now:
+- given an argument of `-` the script will read filenames from stdin
+- given an argument other than `-` this is taken as a directory name
+
+All files ending in EXTENSIONS are taken as a "zippy" file, from which THUMBNAIL_NAMES
+will be removed and the remaining files will be stored in a new, uncompressed zip, which
+will *replace* the original zip files while maintaining permissions and ctime, mtime and 
+atime.
+
+An optional argument `-d` will set the log level to DEBUG and spits out more information
+during the process.
+"""
+
 import logging
 import os
 import sys

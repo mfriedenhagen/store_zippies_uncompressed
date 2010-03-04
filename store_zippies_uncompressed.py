@@ -21,7 +21,10 @@ To use this with mercurial add something like::
 to your hgrc file located in the repository or your HOME (mercurial.ini on Windows).
 
 This software is licensed under the Apache Software License (https://www.ohloh.net/licenses/apache).
+
 Copyright Mirko Friedenhagen 2010.
+
+For more information see: http://bitbucket.org/mfriedenhagen/store_zippies_uncompressed/
 """
 
 import logging

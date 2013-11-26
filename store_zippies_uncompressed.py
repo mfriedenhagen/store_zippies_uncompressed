@@ -23,12 +23,11 @@ to your hgrc file located in the repository or your HOME (mercurial.ini on Windo
 This software is licensed under the Apache Software License (https://www.ohloh.net/licenses/apache).
 
 Copyright Mirko Friedenhagen 2010.
-
-For more information see: http://bitbucket.org/mfriedenhagen/store_zippies_uncompressed/
 """
 
 import logging
 import os
+import StringIO
 import sys
 import zipfile
 
@@ -105,18 +104,27 @@ def replaceOriginalWithUncompressedWithoutThumb(name):
     os.utime(name, (infile_stats.st_atime, infile_stats.st_mtime))
 
 def addZippies(arg, dirname, fnames):
-    """ Functor for collecting all these files with a ZIPped format. """
+    """ Functor for collecting all these files with a ZIPped format.
+    >>> a = []; addZippies(a, ".", ["foo.odt", "bar.txt"]); a
+    ['./foo.odt']
+    """
     for fname in fnames:
         if isZippy(fname):
             arg.append(os.path.join(dirname, fname))
 
 def isZippy(fname):
-    """ Returns True if fname is a zippy. """
+    """ Returns True if fname is a zippy.
+    >>> (isZippy("foo.odt"), isZippy("bar.txt"))
+    (True, False)
+    """
     root, extension = os.path.splitext(fname)
     return extension in EXTENSIONS
 
 def readFromStream(stream):
-    """ Read lines from stream. """
+    """ Read lines from stream.
+    >>> s = StringIO.StringIO("foo.odt\\nbar.txt\\nbar2.ods"); readFromStream(s)
+    ['foo.odt', 'bar2.ods']
+    """
     zippies = []
     for line in stream:
         fname = line.rstrip()

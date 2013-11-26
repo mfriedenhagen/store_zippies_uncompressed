@@ -137,15 +137,19 @@ def walkDirectory(directory):
     os.path.walk(directory, addZippies, zippies)
     return zippies
 
-if __name__ == "__main__":
+def main(argv, stdin):
+    """ Main. """
     logging.basicConfig()
     LOG.setLevel(logging.INFO)
-    if "-d" in sys.argv:
+    if "-d" in argv:
         LOG.setLevel(logging.DEBUG)
-        sys.argv.remove("-d")
-    if sys.argv[1] == "-":
-        zippies = readFromStream(sys.stdin)
+        argv.remove("-d")
+    if argv[1] == "-":
+        zippies = readFromStream(stdin)
     else:
-        zippies = walkDirectory(sys.argv[1])
+        zippies = walkDirectory(argv[1])
     replaceAllOriginalWithUncompressedWithoutThumb(zippies)
+
+if __name__ == "__main__":
+    main(sys.argv, sys.stdin)
 
